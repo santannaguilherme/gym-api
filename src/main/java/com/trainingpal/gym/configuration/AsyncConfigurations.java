@@ -42,15 +42,21 @@ public class AsyncConfigurations implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        long start = System.currentTimeMillis();
-
-        CompletableFuture<Goal> page1 = goalService.createGoal(new Goal());
-
-        CompletableFuture.allOf(page1).join();
-
-        LOGGER.info("Elapsed time: " + (System.currentTimeMillis() - start));
-        LOGGER.info("--> " + page1.get());
+        // TODO Auto-generated method stub
 
     }
+
+    // @Override
+    // public void run(String... args) throws Exception {
+    //     long start = System.currentTimeMillis();
+
+    //     CompletableFuture<Goal> page1 = /*goalService.createGoal(new Goal())*/null;
+
+    //     CompletableFuture.allOf(page1).join();
+
+    //     LOGGER.info("Elapsed time: " + (System.currentTimeMillis() - start));
+    //     LOGGER.info("--> " + page1.get());
+
+    // }
 
 }
