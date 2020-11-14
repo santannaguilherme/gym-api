@@ -20,29 +20,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TEACHER")
-public class Teacher {
+@Table(name = "EXERCICE")
+public class Exercice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Integer exerciseId;
 
-    @Column(name = "name", nullable = false, length = 60)
-    private String name;
-
-    @Column(name = "age", nullable = false)
-    private Integer age;
-
-    @Column(name = "email", nullable = false, length = 60)
-    private String email;
-
-    @Column(name = "phone", nullable = false, length = 60)
-    private String phone;
-
-    @Column(name = "weight", nullable = false)
-    private Double weight;
-
-    @Column(name = "height", nullable = false)
-    private Double height;  
+    @Column(name = "exerciseName", nullable = false, length = 60)
+    private String exerciseName;
 }

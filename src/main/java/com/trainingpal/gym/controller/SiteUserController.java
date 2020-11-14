@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import com.trainingpal.gym.domain.dto.request.LoginRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioAvatarRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
-import com.trainingpal.gym.domain.entities.Usuario;
+import com.trainingpal.gym.domain.entities.User;
 import com.trainingpal.gym.service.SiteUserService;
 import com.trainingpal.gym.service.UsuarioService;
 
@@ -25,8 +25,8 @@ import io.swagger.annotations.ApiOperation;
 /**
  * SiteUserController
  */
-@RestController
-@RequestMapping("/user")
+// @RestController
+// @RequestMapping("/user")
 public class SiteUserController {
 
   private final SiteUserService service;
@@ -44,7 +44,7 @@ public class SiteUserController {
   }
 
   @PostMapping("/login")
-  public Usuario login(@Valid @RequestBody LoginRequest login) {
+  public User login(@Valid @RequestBody LoginRequest login) {
     String email = login.getEmail();
     String senha = login.getSenha();
     return service.ValidateUser(email, senha);
@@ -57,7 +57,7 @@ public class SiteUserController {
   }
 
   @GetMapping()
-  public List<Usuario>  listUsers() {
+  public List<User>  listUsers() {
     return usuarioService.findAll();
   }
 

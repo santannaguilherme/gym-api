@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TEACHER")
-public class Teacher {
+@Table(name = "ATHLETE")
+public class Athlete {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
