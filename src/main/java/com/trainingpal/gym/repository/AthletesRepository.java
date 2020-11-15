@@ -1,6 +1,5 @@
 package com.trainingpal.gym.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.trainingpal.gym.domain.entities.Athlete;
