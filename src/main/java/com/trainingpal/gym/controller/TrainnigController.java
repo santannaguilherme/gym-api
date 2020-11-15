@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.trainingpal.gym.domain.dto.request.TrainnigRequest;
+import com.trainingpal.gym.domain.dto.request.TrainigRequest;
 import com.trainingpal.gym.domain.dto.response.TrainnigResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -42,14 +42,14 @@ public class TrainnigController {
     }
     
     @PostMapping
-	public ResponseEntity<TrainnigResponse> post(@Valid @RequestBody TrainnigRequest model) {
+	public ResponseEntity<TrainnigResponse> post(@Valid @RequestBody TrainigRequest model) {
 		
 		return ResponseEntity.ok(new TrainnigResponse());
     }
     
     @PutMapping(value = "/{id}")
 	public ResponseEntity<TrainnigResponse> updateById(@PathVariable Integer id,
-			@Valid @RequestBody TrainnigRequest model) {
+			@Valid @RequestBody TrainigRequest model) {
 		return ResponseEntity.ok(new TrainnigResponse());
 	}
 

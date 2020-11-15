@@ -41,4 +41,8 @@ public class AthletesRequest {
     @NotEmpty()
     @Size(max = 500)
     private String password;
+
+    private TrainigRequest trainingA;
+    private TrainigRequest trainingB;
+    private TrainigRequest trainingC;
 }

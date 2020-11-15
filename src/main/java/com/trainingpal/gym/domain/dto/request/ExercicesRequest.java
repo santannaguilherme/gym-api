@@ -20,4 +20,6 @@ public class ExercicesRequest {
     private Integer weight;
     @NotEmpty()
     private Integer quantity;
+    @NotEmpty()
+    private Integer repetitions;
 }
