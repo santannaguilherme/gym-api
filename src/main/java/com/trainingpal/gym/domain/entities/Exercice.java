@@ -30,4 +30,9 @@ public class Exercice {
 
     @Column(name = "exerciseName", nullable = false, length = 60)
     private String exerciseName;
+
+    @Column(nullable = false, length = 255)
+    private String image;
+
+
 }
