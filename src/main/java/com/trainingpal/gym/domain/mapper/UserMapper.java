@@ -1,5 +1,6 @@
 package com.trainingpal.gym.domain.mapper;
 
+import com.trainingpal.gym.domain.dto.request.AthletesRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
 import com.trainingpal.gym.domain.dto.response.UserResponse;
 import com.trainingpal.gym.domain.entities.User;
@@ -25,6 +26,10 @@ public class UserMapper {
 
   public User fromDto(UsuarioCreateRequest usuarioCreateRequest) {
     return mapper.map(usuarioCreateRequest, User.class);
+  }
+
+  public UsuarioCreateRequest fromDtoAthlete(AthletesRequest athletesRequest) {
+    return mapper.map(athletesRequest, UsuarioCreateRequest.class);
   }
 
 

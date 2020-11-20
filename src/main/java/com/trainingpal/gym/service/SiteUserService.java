@@ -48,7 +48,7 @@ public class SiteUserService {
 		User newUser = mapper.fromDto(usuarioCreateRequest);
 
 		newUser.setPassword(passEncoder.encode(newUser.getPassword()));
-		userRepository.save(newUser);
+		newUser = userRepository.save(newUser);
 
 		Set<SiteUserRole> roles = new HashSet<SiteUserRole>();
 		String roleString;
@@ -69,11 +69,11 @@ public class SiteUserService {
 		System.out.println(roleString);
 
 		roles.add(getUserRole(newUser, roleString));
-
+		System.out.println("Rola - "+roles.toString());
 		siteUserRoleRepository.saveAll(roles);
 
 		newUser.setRoles(roles);
-		System.out.println("Rola - "+roles.toString());
+		
 		return newUser;
 	}
 
@@ -117,6 +117,10 @@ public class SiteUserService {
 		if (usuario != null) {
 			throw new Exception("E-mail já cadastrado");
 		}
+	}
+
+	public User findByEmail(String email){
+		return userRepository.findByEmail(email);
 	}
 
 }

@@ -14,14 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AthletesRequest {
 
-    @NotEmpty()
     private Integer roleId;
 
     @NotEmpty()
     @Size(max = 500)
     private String name;
 
-    @NotEmpty()
     private Integer age;
 
     @NotEmpty()
@@ -32,12 +30,10 @@ public class AthletesRequest {
     @Size(max = 500)
     private String phone;
 
-    @NotEmpty()
     private Double weight;
 
-    @NotEmpty()
     private Double height;
-    
+
     @NotEmpty()
     @Size(max = 500)
     private String password;

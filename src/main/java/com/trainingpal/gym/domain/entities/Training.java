@@ -30,11 +30,11 @@ public class Training {
 
     @OneToOne()
     @JoinColumn(name = "TeacherId", nullable = false)
-    private Teacher teacher;
+    private User teacher;
     
     @OneToOne()
     @JoinColumn(name = "AthleteId", nullable = false)
-    private Athlete athlete;
+    private User athlete;
 
     @Column(name = "TrainingValidity", nullable = true)
     private Date trainingValidity;

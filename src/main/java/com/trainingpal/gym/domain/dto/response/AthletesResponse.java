@@ -1,5 +1,8 @@
 package com.trainingpal.gym.domain.dto.response;
 
+import com.amazonaws.services.identitymanagement.model.User;
+import com.trainingpal.gym.domain.entities.Training;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AthletesResponse {
-    private String name;
-
-    private Integer age;
-
-    private String email;
-
-    private String phone;
-
-    private Double weight;
-
-    private Double height;
+    private UserResponse user;
+    private Training t;
 }
