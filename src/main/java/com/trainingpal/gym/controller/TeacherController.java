@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.TeacherRequest;
 import com.trainingpal.gym.domain.dto.response.TeacherResponse;
-import com.trainingpal.gym.domain.entities.Teacher;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

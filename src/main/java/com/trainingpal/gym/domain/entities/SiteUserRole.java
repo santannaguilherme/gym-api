@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole {
+public class SiteUserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,6 +7,7 @@ import com.trainingpal.gym.domain.entities.Athlete;
 import com.trainingpal.gym.repository.AthletesRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,10 +17,13 @@ import org.springframework.stereotype.Service;
 public class AthletesService {
 
     private final AthletesRepository athletesRepository;
+    private final PasswordEncoder passEncoder;
 
     @Autowired
-    public AthletesService(AthletesRepository athletesRepository){
+    public AthletesService(AthletesRepository athletesRepository,
+    PasswordEncoder passEncoder){
         this.athletesRepository = athletesRepository;
+        this.passEncoder = passEncoder;
     }
     
     public List<Athlete> listAthletes() {
@@ -48,8 +52,17 @@ public class AthletesService {
     }
 
     private Athlete findByEmail(String email) throws Exception {
-        Optional<Athlete> athletes = athletesRepository.findByEmail(email);
-        return athletes.orElseThrow(() -> new Exception("Athelte Not found"));
+       Athlete athletes = athletesRepository.findByEmail(email);
+        return athletes;
     }
+
+    public Athlete ValidateUser(String email, String senha) throws Exception {
+		Athlete user = athletesRepository.findByEmail(email);
+	  if (passEncoder.matches(senha, user.getPassword())) {
+		return user;
+	  }
+	  else
+		throw new Exception("Usuário ou senha inexistentes");
+	}
     
 }
