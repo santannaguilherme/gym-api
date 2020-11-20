@@ -51,10 +51,24 @@ public class SiteUserService {
 		userRepository.save(newUser);
 
 		Set<SiteUserRole> roles = new HashSet<SiteUserRole>();
-		roles.add(getUserRole(newUser, SiteRoles.APP_STUDENT));
-		// if (isAdmin) {
-		// roles.add(getUserRole(newUser, SiteRoles.APP_ADMIN));
-		// }
+		String roleString;
+		switch (usuarioCreateRequest.getRoleId()) {
+		case 0:
+			roleString = SiteRoles.APP_STUDENT;
+			break;
+		case 1:
+			roleString = SiteRoles.APP_TEACHER;
+			break;
+		case 2:
+			roleString = SiteRoles.APP_STAFF;
+			break;
+		default:
+			roleString = SiteRoles.APP_STUDENT;
+			break;
+		}
+		System.out.println(roleString);
+
+		roles.add(getUserRole(newUser, roleString));
 
 		siteUserRoleRepository.saveAll(roles);
 
