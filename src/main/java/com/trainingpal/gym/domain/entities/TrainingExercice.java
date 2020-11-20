@@ -27,7 +27,7 @@ public class TrainingExercice {
 
     @ManyToOne()
     @JoinColumn(name = "ExerciseId", nullable = false)
-    private Exercice exercice;
+    private Exercise exercice;
 
     @ManyToOne()
     @JoinColumn(name = "TrainingId", nullable = false)
