@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "DailyTraining")
 public class DailyTraining {
 
     @Id

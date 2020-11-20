@@ -14,7 +14,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class AuthProviderService implements AuthenticationProvider {
 
@@ -27,7 +26,13 @@ public class AuthProviderService implements AuthenticationProvider {
     String name = authentication.getName();
     String password = authentication.getCredentials().toString();
 
-    User validUser = userService.ValidateUser(name, password);
+    User validUser = null;
+    try {
+      validUser = userService.ValidateUser(name, password);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
     if (validUser != null) {
       List<SiteRole> roles = userService.rolesFrom(validUser.getEmail());

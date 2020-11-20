@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "EXERCICE")
 public class Exercice {
 
     @Id

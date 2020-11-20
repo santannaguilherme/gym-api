@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SiteRole implements GrantedAuthority {
- /**
+
+  /**
    *
    */
-
   private static final long serialVersionUID = -1702117189815215655L;
   @Id
   private String name;

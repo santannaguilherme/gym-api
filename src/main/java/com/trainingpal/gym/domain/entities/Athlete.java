@@ -1,10 +1,15 @@
 package com.trainingpal.gym.domain.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ATHLETE")
 public class Athlete {
 
     @Id
@@ -45,4 +49,11 @@ public class Athlete {
 
     @Column(name = "height", nullable = false)
     private Double height;  
+
+    @Column(nullable = false, length = 255)
+    private String password;
+  
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "siteUserId")
+    private Set<SiteUserRole> roles;
 }

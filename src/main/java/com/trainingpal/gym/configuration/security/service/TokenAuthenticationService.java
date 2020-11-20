@@ -2,6 +2,7 @@ package com.trainingpal.gym.configuration.security.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +13,12 @@ import com.trainingpal.gym.service.SiteUserService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 
 public class TokenAuthenticationService {
 
@@ -26,11 +27,14 @@ public class TokenAuthenticationService {
   static final String SECRET = "MySecret#@$!@aleatorio";
   static final String TOKEN_PREFIX = "Bearer";
   static final String HEADER_STRING = "Authorization";
+  static final String AUTHORITIES_KEY = "scopes";
 
-  public static void addAuthentication(HttpServletResponse response, String username) {
-    String JWT = Jwts.builder().setSubject(username)
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-        .signWith(SignatureAlgorithm.HS512, SECRET).compact();
+  public static void addAuthentication(HttpServletResponse response, Authentication auth) {
+    final String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+    .collect(Collectors.joining(","));
+    String JWT = Jwts.builder().setSubject(auth.getName()).claim(AUTHORITIES_KEY, authorities)
+    .signWith(SignatureAlgorithm.HS256, SECRET).setIssuedAt(new Date(System.currentTimeMillis()))
+    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME * 1000)).compact();
 
     response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
     response.addHeader("access-control-expose-headers", "Authorization");
@@ -56,11 +60,6 @@ public class TokenAuthenticationService {
       }
     }
     return null;
-  }
-
-  public static String generateToken(String username) {
-    return Jwts.builder().setSubject(username).setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-        .signWith(SignatureAlgorithm.HS512, SECRET).compact();
   }
 
 }

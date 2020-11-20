@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AthletesRepository extends JpaRepository<Athlete, Integer> {
-    Optional<Athlete> findByEmail(String email);
+    Athlete findByEmail(String email);
 }

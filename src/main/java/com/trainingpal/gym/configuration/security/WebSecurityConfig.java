@@ -28,13 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf().disable().authorizeRequests()
-        .antMatchers("/user","/login", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/swagger-resources/**",
+        .antMatchers("/user","/user/login", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/swagger-resources/**",
             "/configuration/security", "/swagger-ui.html", "/webjars/**")
         .permitAll() // acesso para o swagger
         .antMatchers("/").permitAll().anyRequest().authenticated().and()
 
         // filtra requisições de login
-        .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+        .addFilterBefore(new JWTLoginFilter("/user/login", authenticationManager()),
             UsernamePasswordAuthenticationFilter.class)
         .cors().and()
 
