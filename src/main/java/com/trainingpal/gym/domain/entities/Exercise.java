@@ -10,7 +10,9 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Athlete
@@ -18,10 +20,18 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exercice {
+@Table(name = "EXERCISE")
+public class Exercise {
 
+	
+	public Exercise(String exerciseName, String image) {
+		this.exerciseName = exerciseName;
+		this.image = image;
+	}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

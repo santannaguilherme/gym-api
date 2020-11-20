@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ExerciceResponse {
     private Integer exerciseId;
     private String exerciseName;
+    private String exerciseImage;
 }
