@@ -21,28 +21,27 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Training {
+public class DailyTraining {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TrainingId", nullable = false)
-    private Integer trainingId;
+    @Column(name = "DailyTrainingId", nullable = false)
+    private Integer dailyTrainingId;
 
     @OneToOne()
-    @JoinColumn(name = "TeacherId", nullable = false)
-    private Teacher teacher;
+    @JoinColumn(name = "trainingId", nullable = false)
+    private Training training;
     
     @OneToOne()
     @JoinColumn(name = "AthleteId", nullable = false)
     private Athlete athlete;
 
-    @Column(name = "TrainingValidity", nullable = true)
-    private Date trainingValidity;
+    @Column(name = "TrainingDate", nullable = true)
+    private Date trainingDate;
 
-    @Column(name = "TrainingType", nullable = false, length = 60)
-    private String trainingType;
+    @Column(name = "IsStarted", nullable = false)
+    private Boolean isStarted;
 
-    @Column(name = "Active", nullable = false)
-    private Boolean active;
-
+    @Column(name = "IsFinished", nullable = false)
+    private Boolean isFinished;
 }

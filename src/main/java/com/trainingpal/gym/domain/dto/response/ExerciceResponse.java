@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ExerciceResponse {
-    private int id;
-    private String name;
+    private Integer exerciseId;
+    private String exerciseName;
 }

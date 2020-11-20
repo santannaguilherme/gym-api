@@ -5,15 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StudentResponse {
-
+public class UserResponse {
     private String name;
-    private int score;
+
+    private Integer age;
+
+    private String email;
+
+    private String phone;
+
+    private Double weight;
+
+    private Double height;
 }
