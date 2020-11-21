@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
+import com.amazonaws.regions.Regions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class AmazonClientService {
 	private void initializeAmazon() {
 		AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 		this.s3Client = AmazonS3ClientBuilder.standard()
+				.withRegion(Regions.US_EAST_1)
 				.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 	} 
 	
