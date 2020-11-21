@@ -1,6 +1,5 @@
 package com.trainingpal.gym.domain.dto.response;
 
-import com.amazonaws.services.identitymanagement.model.User;
 import com.trainingpal.gym.domain.entities.Training;
 
 import lombok.AllArgsConstructor;
