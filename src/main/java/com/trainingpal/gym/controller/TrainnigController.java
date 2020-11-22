@@ -6,12 +6,15 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
-import com.trainingpal.gym.domain.dto.response.TrainnigResponse;
+import com.trainingpal.gym.domain.dto.response.TrainigResponse;
+import com.trainingpal.gym.service.TrainingService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PathVariable; 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,14 +28,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/my-trainnig")
 public class TrainnigController {
+    
+    private final TrainingService trainingService;
+
+    @Autowired
+    public TrainnigController(TrainingService trainingService) {
+
+        this.trainingService = trainingService;
+    }
     @GetMapping()
-    public ResponseEntity<List<TrainnigResponse>> list() {
-        List<TrainnigResponse> l = new ArrayList<>();
+    public ResponseEntity<List<TrainigResponse>> list() {
+        List<TrainigResponse> l = new ArrayList<>();
         return ResponseEntity.ok(l);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<TrainnigResponse> getById(@PathVariable int id) {
-        TrainnigResponse c = new TrainnigResponse();
+    public ResponseEntity<TrainigResponse> getById(@PathVariable int id) {
+        TrainigResponse c = new TrainigResponse();
         return ResponseEntity.ok(c);
 
     }
@@ -42,15 +53,23 @@ public class TrainnigController {
     }
     
     @PostMapping
-	public ResponseEntity<TrainnigResponse> post(@Valid @RequestBody TrainigRequest model) {
+	public ResponseEntity<TrainigResponse> post(@Valid @RequestBody TrainigRequest model) {
 		
-		return ResponseEntity.ok(new TrainnigResponse());
+		return ResponseEntity.ok(new TrainigResponse());
     }
     
     @PutMapping(value = "/{id}")
-	public ResponseEntity<TrainnigResponse> updateById(@PathVariable Integer id,
+	public ResponseEntity<TrainigResponse> updateById(@PathVariable Integer id,
 			@Valid @RequestBody TrainigRequest model) {
-		return ResponseEntity.ok(new TrainnigResponse());
-	}
+		return ResponseEntity.ok(new TrainigResponse());
+    }
+    
+    @PostMapping("/start/{id}")
+	public ResponseEntity<TrainigResponse> post(@PathVariable String id, Authentication authentication)
+            throws Exception {
+
+		return ResponseEntity.ok(trainingService.getByTypeUser(id,authentication.getName()));
+    }
+    
 
 }

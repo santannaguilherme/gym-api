@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface TrainingRepository extends JpaRepository<Training,Integer> {
 
+    Training findByActiveAndAthleteIdAndTrainingType(Boolean active, Integer athleteId, String trainingType);
     
 }
