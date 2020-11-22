@@ -125,7 +125,7 @@ public class SiteUserService {
 
 	public User findById(Integer id) throws Exception {
 		Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow(() -> new Exception("Filme Not found"));
+        return user.orElseThrow(() -> new Exception("User Not found"));
 	}
 
 }
