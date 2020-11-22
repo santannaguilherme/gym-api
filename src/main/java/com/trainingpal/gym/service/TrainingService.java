@@ -43,8 +43,7 @@ public class TrainingService {
 
     @Autowired
     public TrainingService(TrainingRepository trainingRepository, SiteUserService siteUserService,
-            UserMapper userMapper, ExerciceMapper exerciceMapper,
-            TrainingExerciceRepository trainingExerciceRepository,
+            UserMapper userMapper, ExerciceMapper exerciceMapper, TrainingExerciceRepository trainingExerciceRepository,
             DailyTrainingRepository dailyTrainingRepository) {
         this.trainingRepository = trainingRepository;
         this.trainingExerciceRepository = trainingExerciceRepository;
@@ -64,7 +63,7 @@ public class TrainingService {
     }
 
     public AthletesResponse createAthlete(AthletesRequest model, String teacherEmail) throws Exception {
-        
+
         User user = saveUser(model);
 
         List<TrainigRequest> list = new ArrayList<TrainigRequest>();
@@ -76,8 +75,6 @@ public class TrainingService {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         c.add(Calendar.DATE, 30);
-
-        
 
         List<Training> tList = new ArrayList<Training>();
         for (int i = 0; i < list.size(); i++) {
@@ -106,8 +103,8 @@ public class TrainingService {
             t = trainingRepository.save(t);
             tList.add(t);
 
-            for(ExercicesRequest ex : list.get(i).getExercices()){
-                saveExecise(ex,t);
+            for (ExercicesRequest ex : list.get(i).getExercices()) {
+                saveExecise(ex, t);
             }
 
         }
@@ -118,8 +115,7 @@ public class TrainingService {
         return athlete;
     }
 
-
-    public void saveExecise(ExercicesRequest ex, Training t){
+    public void saveExecise(ExercicesRequest ex, Training t) {
         TrainingExercice exercice = new TrainingExercice();
         exercice.setExercice(exerciceMapper.fromDto(ex));
         exercice.setRepetions(ex.getRepetitions());
@@ -142,25 +138,25 @@ public class TrainingService {
         return trainingRepository.save(training);
     }
 
-	public TrainigResponse getByTypeUser(String id, String name) throws Exception {
+    public TrainigResponse getByTypeUser(String id, String name) throws Exception {
         User user = siteUserService.findByEmail(name);
-        
+
         Training training = trainingRepository.findByActiveAndAthleteIdAndTrainingType(true, user.getId(), id);
         User teacher = siteUserService.findById(training.getTeacher().getId());
         DailyTraining day = new DailyTraining();
         day.setAthlete(user);
         day.setTraining(training);
-        day.setIsStarted(true);
+        day.setIsStarted(false);
         day.setIsFinished(false);
         day.setTrainingDate(new Date());
         day = dailyTrainingRepository.save(day);
 
         List<TrainingExercice> list = trainingExerciceRepository.findBytraining(training);
-       
+
         List<TrainningExerciceResponse> listTrainningExerciceResponse = new ArrayList<TrainningExerciceResponse>();
-        
-        for(TrainingExercice train:  list){
-            TrainningExerciceResponse  res = new TrainningExerciceResponse();
+
+        for (TrainingExercice train : list) {
+            TrainningExerciceResponse res = new TrainningExerciceResponse();
             res.setExerciseImage(train.getExercice().getImage());
             res.setExerciseId(train.getExercice().getExerciseId());
             res.setExerciseName(train.getExercice().getExerciseName());
@@ -170,7 +166,7 @@ public class TrainingService {
             res.setWeight(train.getWeight());
             listTrainningExerciceResponse.add(res);
         }
-        TrainigResponse t =  new TrainigResponse();
+        TrainigResponse t = new TrainigResponse();
         t.setDailyTrainingId(day.getDailyTrainingId());
         t.setTrainingId(training.getTrainingId());
         t.setIsStarted(day.getIsStarted());
@@ -178,7 +174,55 @@ public class TrainingService {
         t.setTrainingType(id);
         t.setExercises(listTrainningExerciceResponse);
 
-		return t;
-	}
+        return t;
+    }
+
+    public TrainigResponse getByUser(String name) throws Exception {
+        User user = siteUserService.findByEmail(name);
+
+        // Optional<Training> trainingOp = trainingRepository.findByActiveAndAthleteId(true, user.getId());
+        // Training training = trainingOp.orElseThrow(() -> new Exception("User Not found"));
+
+        Optional<DailyTraining> trainingDaOp = dailyTrainingRepository.findByAthleteAndIsStartedAndIsFinished(user,
+                true, false);
+        DailyTraining t = null;
+        try {
+            t = trainingDaOp.orElseThrow(() -> new Exception("User Not found"));
+        } catch (Exception e) {
+
+            TrainigResponse tr = new TrainigResponse();
+            // tr.setTrainingId(training.getTrainingId());
+            tr.setIsStarted(false);
+            tr.setIsFinished(false);
+            tr.setTrainingType("");
+            return tr;
+        }
+
+        Optional<Training> trainOptional = trainingRepository.findById(t.getTraining().getTrainingId());
+        Training train = trainOptional.orElseThrow(() -> new Exception("User Not found"));
+        List<TrainingExercice> list = trainingExerciceRepository.findBytraining(train);
+        List<TrainningExerciceResponse> listTrainningExerciceResponse = new ArrayList<TrainningExerciceResponse>();
+        
+        for (TrainingExercice trai : list) {
+            TrainningExerciceResponse res = new TrainningExerciceResponse();
+            res.setExerciseImage(trai.getExercice().getImage());
+            res.setExerciseId(trai.getExercice().getExerciseId());
+            res.setExerciseName(trai.getExercice().getExerciseName());
+            res.setRepetitions(trai.getRepetions());
+            res.setSeries(trai.getSeries());
+            res.setWeight(trai.getWeight());
+            listTrainningExerciceResponse.add(res);
+        }
+
+        TrainigResponse tra = new TrainigResponse();
+        tra.setDailyTrainingId(t.getDailyTrainingId());
+        tra.setTrainingId(train.getTrainingId());
+        tra.setIsStarted(t.getIsStarted());
+        tra.setIsFinished(t.getIsFinished());
+        tra.setTrainingType(train.getTrainingType());
+        tra.setExercises(listTrainningExerciceResponse);
+        
+        return tra;
+    }
 
 }

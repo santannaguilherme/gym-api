@@ -37,9 +37,8 @@ public class TrainnigController {
         this.trainingService = trainingService;
     }
     @GetMapping()
-    public ResponseEntity<List<TrainigResponse>> list() {
-        List<TrainigResponse> l = new ArrayList<>();
-        return ResponseEntity.ok(l);
+    public ResponseEntity<TrainigResponse> list( Authentication authentication) throws Exception {
+        return ResponseEntity.ok(trainingService.getByUser(authentication.getName()));
     }
     @GetMapping(value = "/{id}")
     public ResponseEntity<TrainigResponse> getById(@PathVariable int id) {
