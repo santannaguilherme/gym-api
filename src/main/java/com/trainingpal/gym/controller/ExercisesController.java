@@ -46,10 +46,10 @@ public class ExercisesController {
     }
     
     @PostMapping
-    public ResponseEntity<String> saveExercise(@RequestPart(value="exerciseName") String exerciseName, @RequestPart(value="file") MultipartFile file) {
-    	String fileString = this.exerciseService.addExercise(exerciseName, file);
+    public ResponseEntity<Exercise> saveExercise(@RequestPart(value="exerciseName") String exerciseName, @RequestPart(value="file") MultipartFile file) {
+    	Exercise exercise = this.exerciseService.addExercise(exerciseName, file);
     	
-        return ResponseEntity.ok(fileString);
+        return ResponseEntity.ok(exercise);
     }
     
     @DeleteMapping(value = "/{exerciseId}")
@@ -65,17 +65,20 @@ public class ExercisesController {
     }
     
     @PutMapping(value = "/{exerciseId}")
-    public ResponseEntity<String> updateExercise(@PathVariable Integer exerciseId,
+    public ResponseEntity<Exercise> updateExercise(@PathVariable Integer exerciseId,
     		@RequestPart(value="exerciseName") String exerciseName, @RequestPart(value="file") MultipartFile file) {
-    	Exercise exercise = new Exercise();
-    	exercise.setExerciseId(exerciseId);
-    	exercise.setExerciseName(exerciseName);
+    	
     	try {
-    		this.exerciseService.updateExercise(exercise, file);    		
+    		Exercise exercise = new Exercise();
+        	exercise.setExerciseId(exerciseId);
+        	exercise.setExerciseName(exerciseName);
+    		Exercise updatedExercise = this.exerciseService.updateExercise(exercise, file);    
+    		return ResponseEntity.ok(updatedExercise);
     	} catch (Exception e) {
+    		
     		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("An Error Ocurred.");
+					.body(null);
     	}
-    	return ResponseEntity.ok("Successfully updated.");
+    	
     }
 }

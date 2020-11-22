@@ -21,4 +21,6 @@ public class UserResponse {
     private Double weight;
 
     private Double height;
+
+    private Integer id;
 }

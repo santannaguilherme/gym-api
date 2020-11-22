@@ -34,10 +34,10 @@ public class TrainingExercice {
     private Training training;
 
     @Column(name = "PreviousWeight", nullable = false)
-    private Double previousWeight;
+    private Integer previousWeight;
 
     @Column(name = "Weight", nullable = false)
-    private Double weight;
+    private Integer weight;
 
     @Column(name = "Repetions", nullable = false)
     private Integer repetions;
