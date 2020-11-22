@@ -1,7 +1,6 @@
 package com.trainingpal.gym.domain.mapper;
 
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
-import com.trainingpal.gym.domain.dto.response.TrainnigResponse;
 import com.trainingpal.gym.domain.entities.Training;
 
 import org.modelmapper.ModelMapper;
@@ -17,10 +16,6 @@ public class TrainingMapper {
     @Autowired
     public TrainingMapper(ModelMapper mapper) {
     this.mapper = mapper;
-  }
-
-  public TrainnigResponse toDto(Training training) {
-    return mapper.map(training, TrainnigResponse.class);
   }
 
   public Training fromDto(TrainigRequest trainigRequest) {

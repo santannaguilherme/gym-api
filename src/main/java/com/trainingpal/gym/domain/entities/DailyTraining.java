@@ -34,7 +34,7 @@ public class DailyTraining {
     
     @OneToOne()
     @JoinColumn(name = "AthleteId", nullable = false)
-    private Athlete athlete;
+    private User athlete;
 
     @Column(name = "TrainingDate", nullable = true)
     private Date trainingDate;
