@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class TrainigRequest {
 
     @NotNull()
-    private List<ExercicesRequest> exercices;
+    private List<ExercicesRequest> exercises;
 
 }
