@@ -23,11 +23,11 @@ public class ExerciseService {
         this.amazonClientService = amazonClientService;
     }
     
-    public String addExercise(String exerciseName, MultipartFile file) {
+    public Exercise addExercise(String exerciseName, MultipartFile file) {
     	String imageUrl = this.amazonClientService.uploadFile(file);
     	Exercise exercise = new Exercise(exerciseName, imageUrl);
     	this.exerciseRepository.save(exercise);
-    	return imageUrl;
+    	return exercise;
     }
     
     public List<Exercise> listExercices () {
