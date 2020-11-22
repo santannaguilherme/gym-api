@@ -106,7 +106,7 @@ public class TrainingService {
             t = trainingRepository.save(t);
             tList.add(t);
 
-            for(ExercicesRequest ex : list.get(i).getExercices()){
+            for(ExercicesRequest ex : list.get(i).getExercises()){
                 saveExecise(ex,t);
             }
 
