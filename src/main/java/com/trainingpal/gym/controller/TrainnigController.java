@@ -6,7 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
+import com.trainingpal.gym.domain.dto.request.WeightRequest;
 import com.trainingpal.gym.domain.dto.response.TrainigResponse;
+import com.trainingpal.gym.domain.dto.response.WeightResponse;
 import com.trainingpal.gym.service.TrainingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +59,10 @@ public class TrainnigController {
 		return ResponseEntity.ok(new TrainigResponse());
     }
     
-    @PutMapping(value = "/{id}")
-	public ResponseEntity<TrainigResponse> updateById(@PathVariable Integer id,
-			@Valid @RequestBody TrainigRequest model) {
-		return ResponseEntity.ok(new TrainigResponse());
+    @PutMapping
+	public ResponseEntity<WeightResponse> updateWeight(@Valid @RequestBody WeightRequest model) throws Exception {
+
+		return ResponseEntity.ok(trainingService.updateWeight(model));
     }
     
     @PostMapping("/start/{id}")

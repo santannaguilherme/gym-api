@@ -7,22 +7,28 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import com.trainingpal.gym.domain.dto.request.AthletesRequest;
 import com.trainingpal.gym.domain.dto.request.ExercicesRequest;
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
+import com.trainingpal.gym.domain.dto.request.WeightRequest;
 import com.trainingpal.gym.domain.dto.response.AthletesResponse;
 import com.trainingpal.gym.domain.dto.response.MyAthletesReponse;
 import com.trainingpal.gym.domain.dto.response.TrainigResponse;
 import com.trainingpal.gym.domain.dto.response.TrainningExerciceResponse;
 import com.trainingpal.gym.domain.dto.response.UserResponse;
+import com.trainingpal.gym.domain.dto.response.WeightResponse;
 import com.trainingpal.gym.domain.entities.DailyTraining;
+import com.trainingpal.gym.domain.entities.Exercise;
 import com.trainingpal.gym.domain.entities.Training;
 import com.trainingpal.gym.domain.entities.TrainingExercice;
 import com.trainingpal.gym.domain.entities.User;
 import com.trainingpal.gym.domain.mapper.ExerciceMapper;
 import com.trainingpal.gym.domain.mapper.UserMapper;
 import com.trainingpal.gym.repository.DailyTrainingRepository;
+import com.trainingpal.gym.repository.ExerciseRepository;
 import com.trainingpal.gym.repository.TrainingExerciceRepository;
 import com.trainingpal.gym.repository.TrainingRepository;
 
@@ -37,6 +43,7 @@ public class TrainingService {
 
     private final TrainingRepository trainingRepository;
     private final DailyTrainingRepository dailyTrainingRepository;
+    private final ExerciseRepository exerciseRepository;
     private final UserMapper userMapper;
     private final ExerciceMapper exerciceMapper;
     private final SiteUserService siteUserService;
@@ -45,13 +52,14 @@ public class TrainingService {
     @Autowired
     public TrainingService(TrainingRepository trainingRepository, SiteUserService siteUserService,
             UserMapper userMapper, ExerciceMapper exerciceMapper, TrainingExerciceRepository trainingExerciceRepository,
-            DailyTrainingRepository dailyTrainingRepository) {
+            DailyTrainingRepository dailyTrainingRepository, ExerciseRepository exerciseRepository) {
         this.trainingRepository = trainingRepository;
         this.trainingExerciceRepository = trainingExerciceRepository;
         this.exerciceMapper = exerciceMapper;
         this.userMapper = userMapper;
         this.siteUserService = siteUserService;
         this.dailyTrainingRepository = dailyTrainingRepository;
+        this.exerciseRepository = exerciseRepository;
     }
 
     public List<Training> listAthletes() {
@@ -240,6 +248,26 @@ public class TrainingService {
         MyAthletesReponse m = new MyAthletesReponse();
         m.setAthletes(listWithoutDuplicates);
         return m;
+    }
+
+    public WeightResponse updateWeight(@Valid WeightRequest model) throws Exception {
+        Optional<Training> tOp = trainingRepository.findById(model.getTrainingId());
+        Training t = tOp.orElseThrow(() -> new Exception("Training not found"));
+
+        Optional<Exercise> eOp = exerciseRepository.findById(model.getExerciseId());
+        Exercise e = eOp.orElseThrow(() -> new Exception("Exercise not found"));
+
+        List<TrainingExercice> listTrainingExercice = trainingExerciceRepository.findByTrainingAndExercice(t, e);
+
+        for (int i = 0; i < listTrainingExercice.size(); i++) {
+            TrainingExercice trainingExercice = listTrainingExercice.get(i);
+            trainingExercice.setPreviousWeight(trainingExercice.getWeight());
+            trainingExercice.setWeight(model.getCurrentWeight());
+        }
+
+        trainingExerciceRepository.saveAll(listTrainingExercice);
+
+        return new WeightResponse().builder().exerciseId(model.getExerciseId()).currentWeight(model.getCurrentWeight()).build();
     }
 
 }
