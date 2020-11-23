@@ -6,9 +6,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.TeacherRequest;
+import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
 import com.trainingpal.gym.domain.dto.response.TeacherResponse;
+import com.trainingpal.gym.service.SiteUserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,32 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {
-    @GetMapping()
-    public ResponseEntity<List<TeacherResponse>> list() {
-        List<TeacherResponse> l = new ArrayList<>();
-        return ResponseEntity.ok(l);
-    }
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<TeacherResponse> getById(@PathVariable int id) {
-        TeacherResponse c = new TeacherResponse();
-        return ResponseEntity.ok(c);
-
-    }
-
-    @DeleteMapping(value = "/{id}")
-	public void deletById(@PathVariable Integer id) {
-    }
     
-    @PostMapping
-	public ResponseEntity<TeacherResponse> post(@Valid @RequestBody TeacherRequest model) {
-		
-		return ResponseEntity.ok(new TeacherResponse());
-    }
-    
-    @PutMapping(value = "/{id}")
-	public ResponseEntity<TeacherResponse> updateById(@PathVariable Integer id,
-			@Valid @RequestBody TeacherRequest model) {
-		return ResponseEntity.ok(new TeacherResponse());
-	}
+    private final SiteUserService service;
 
+    @Autowired
+    public TeacherController(SiteUserService service)  {
+      this.service = service;
+    }
+    @PutMapping
+    public void updateUser(@Valid @RequestBody UsuarioCreateRequest usuarioCreateRequest,Authentication authentication ) throws Exception {
+      service.updateUser(authentication.getName(),usuarioCreateRequest);
+    }
 }

@@ -3,6 +3,7 @@ package com.trainingpal.gym.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,15 +12,15 @@ import com.trainingpal.gym.domain.dto.request.ExercicesRequest;
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
 import com.trainingpal.gym.domain.dto.response.AthletesResponse;
+import com.trainingpal.gym.domain.dto.response.MyAthletesReponse;
 import com.trainingpal.gym.domain.dto.response.TrainigResponse;
 import com.trainingpal.gym.domain.dto.response.TrainningExerciceResponse;
-import com.trainingpal.gym.domain.entities.Athlete;
+import com.trainingpal.gym.domain.dto.response.UserResponse;
 import com.trainingpal.gym.domain.entities.DailyTraining;
 import com.trainingpal.gym.domain.entities.Training;
 import com.trainingpal.gym.domain.entities.TrainingExercice;
 import com.trainingpal.gym.domain.entities.User;
 import com.trainingpal.gym.domain.mapper.ExerciceMapper;
-import com.trainingpal.gym.domain.mapper.TrainingMapper;
 import com.trainingpal.gym.domain.mapper.UserMapper;
 import com.trainingpal.gym.repository.DailyTrainingRepository;
 import com.trainingpal.gym.repository.TrainingExerciceRepository;
@@ -103,8 +104,8 @@ public class TrainingService {
             t = trainingRepository.save(t);
             tList.add(t);
 
-            for(ExercicesRequest ex : list.get(i).getExercises()){
-                saveExecise(ex,t);
+            for (ExercicesRequest ex : list.get(i).getExercises()) {
+                saveExecise(ex, t);
             }
 
         }
@@ -146,7 +147,7 @@ public class TrainingService {
         DailyTraining day = new DailyTraining();
         day.setAthlete(user);
         day.setTraining(training);
-        day.setIsStarted(false);
+        day.setIsStarted(true);
         day.setIsFinished(false);
         day.setTrainingDate(new Date());
         day = dailyTrainingRepository.save(day);
@@ -180,8 +181,10 @@ public class TrainingService {
     public TrainigResponse getByUser(String name) throws Exception {
         User user = siteUserService.findByEmail(name);
 
-        // Optional<Training> trainingOp = trainingRepository.findByActiveAndAthleteId(true, user.getId());
-        // Training training = trainingOp.orElseThrow(() -> new Exception("User Not found"));
+        // Optional<Training> trainingOp =
+        // trainingRepository.findByActiveAndAthleteId(true, user.getId());
+        // Training training = trainingOp.orElseThrow(() -> new Exception("User Not
+        // found"));
 
         Optional<DailyTraining> trainingDaOp = dailyTrainingRepository.findByAthleteAndIsStartedAndIsFinished(user,
                 true, false);
@@ -202,7 +205,7 @@ public class TrainingService {
         Training train = trainOptional.orElseThrow(() -> new Exception("User Not found"));
         List<TrainingExercice> list = trainingExerciceRepository.findBytraining(train);
         List<TrainningExerciceResponse> listTrainningExerciceResponse = new ArrayList<TrainningExerciceResponse>();
-        
+
         for (TrainingExercice trai : list) {
             TrainningExerciceResponse res = new TrainningExerciceResponse();
             res.setExerciseImage(trai.getExercice().getImage());
@@ -221,8 +224,22 @@ public class TrainingService {
         tra.setIsFinished(t.getIsFinished());
         tra.setTrainingType(train.getTrainingType());
         tra.setExercises(listTrainningExerciceResponse);
-        
+
         return tra;
+    }
+
+    public MyAthletesReponse getMyAthletes(String name) {
+        User user = siteUserService.findByEmail(name);
+        List<Training> trainings = trainingRepository.findByTeacher(user);
+        List<UserResponse> ath = new ArrayList<UserResponse>();
+        for (Training t : trainings) {
+            ath.add(userMapper.toDto(t.getAthlete()));
+        }
+
+        List<UserResponse> listWithoutDuplicates = new ArrayList<>(new HashSet<>(ath));
+        MyAthletesReponse m = new MyAthletesReponse();
+        m.setAthletes(listWithoutDuplicates);
+        return m;
     }
 
 }

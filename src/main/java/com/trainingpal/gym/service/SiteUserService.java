@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
+import com.trainingpal.gym.domain.dto.response.UserResponse;
 import com.trainingpal.gym.domain.entities.SiteRole;
 import com.trainingpal.gym.domain.entities.SiteUserRole;
 import com.trainingpal.gym.domain.entities.User;
@@ -69,11 +70,11 @@ public class SiteUserService {
 		System.out.println(roleString);
 
 		roles.add(getUserRole(newUser, roleString));
-		System.out.println("Rola - "+roles.toString());
+		System.out.println("Rola - " + roles.toString());
 		siteUserRoleRepository.saveAll(roles);
 
 		newUser.setRoles(roles);
-		
+
 		return newUser;
 	}
 
@@ -119,13 +120,26 @@ public class SiteUserService {
 		}
 	}
 
-	public User findByEmail(String email){
+	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
 	public User findById(Integer id) throws Exception {
 		Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow(() -> new Exception("User Not found"));
+		return user.orElseThrow(() -> new Exception("User Not found"));
+	}
+
+	public UserResponse updateUser(String email, UsuarioCreateRequest up) {
+		User user = findByEmail(email);
+		System.out.println(user.toString());
+		user.setAge(up.getAge());
+		user.setEmail(up.getEmail());
+		user.setHeight(up.getHeight());
+		user.setName(up.getName());
+		user.setPhone(up.getPhone());
+		user.setWeight(up.getWeight());
+		return mapper.toDto(userRepository.save(user)) ;
+
 	}
 
 }

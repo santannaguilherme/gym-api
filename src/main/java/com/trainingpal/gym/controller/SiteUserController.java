@@ -11,6 +11,7 @@ import com.trainingpal.gym.domain.entities.User;
 import com.trainingpal.gym.service.SiteUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,6 +40,8 @@ public class SiteUserController {
   public void createUsuario(@Valid @RequestBody UsuarioCreateRequest usuarioCreateRequest) throws Exception {
     service.createUser(usuarioCreateRequest);
   }
+
+
 
   @PostMapping("/login")
   public User login(@Valid @RequestBody LoginRequest login) throws Exception {
