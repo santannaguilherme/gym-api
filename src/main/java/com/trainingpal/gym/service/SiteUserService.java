@@ -142,4 +142,8 @@ public class SiteUserService {
 
 	}
 
+	public void saveUSer(User u) {
+		userRepository.save(u);
+	}
+
 }

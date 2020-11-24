@@ -52,4 +52,8 @@ public class User {
   @OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "siteUserId")
   private Set<SiteUserRole> roles;
+
+  @Column(nullable = true)
+  private Boolean desabled;
+
 }

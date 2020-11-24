@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.AthletesRequest;
 import com.trainingpal.gym.domain.dto.request.ExercicesRequest;
+import com.trainingpal.gym.domain.dto.request.TrainRealRequest;
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
 import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
 import com.trainingpal.gym.domain.dto.request.WeightRequest;
@@ -29,6 +30,7 @@ import com.trainingpal.gym.domain.mapper.ExerciceMapper;
 import com.trainingpal.gym.domain.mapper.UserMapper;
 import com.trainingpal.gym.repository.DailyTrainingRepository;
 import com.trainingpal.gym.repository.ExerciseRepository;
+import com.trainingpal.gym.repository.SiteUserRepository;
 import com.trainingpal.gym.repository.TrainingExerciceRepository;
 import com.trainingpal.gym.repository.TrainingRepository;
 
@@ -203,7 +205,7 @@ public class TrainingService {
 
             TrainigResponse tr = new TrainigResponse();
             // tr.setTrainingId(training.getTrainingId());
-            tr.setIsStarted(false);
+            tr.setIsStarted(true);
             tr.setIsFinished(false);
             tr.setTrainingType("");
             return tr;
@@ -269,5 +271,20 @@ public class TrainingService {
 
         return new WeightResponse().builder().exerciseId(model.getExerciseId()).currentWeight(model.getCurrentWeight()).build();
     }
+
+	public void deleteUser(String email) {
+        User u = siteUserService.findByEmail(email);
+        u.setDesabled(true);
+        siteUserService.saveUSer(u);
+	}
+
+	public void finishTraining(TrainRealRequest model) throws Exception {
+        Optional<DailyTraining> dailyOp = dailyTrainingRepository.findById(model.getDailyTrainingId());
+        DailyTraining daily = dailyOp.orElseThrow(() -> new Exception("Treino não encontrado"));
+        daily.setIsFinished(model.getIsFinished());
+        daily.setIsStarted(false);
+        dailyTrainingRepository.save(daily);
+
+	}
 
 }

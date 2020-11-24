@@ -1,10 +1,8 @@
 package com.trainingpal.gym.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
+import com.trainingpal.gym.domain.dto.request.TrainRealRequest;
 import com.trainingpal.gym.domain.dto.request.TrainigRequest;
 import com.trainingpal.gym.domain.dto.request.WeightRequest;
 import com.trainingpal.gym.domain.dto.response.TrainigResponse;
@@ -54,9 +52,8 @@ public class TrainnigController {
     }
     
     @PostMapping
-	public ResponseEntity<TrainigResponse> post(@Valid @RequestBody TrainigRequest model) {
-		
-		return ResponseEntity.ok(new TrainigResponse());
+	public void post(@Valid @RequestBody TrainRealRequest model) throws Exception {
+		trainingService.finishTraining(model);
     }
     
     @PutMapping

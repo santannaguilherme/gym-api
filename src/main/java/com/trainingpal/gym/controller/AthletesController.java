@@ -6,17 +6,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.trainingpal.gym.domain.dto.request.AthletesRequest;
-import com.trainingpal.gym.domain.dto.request.UsuarioCreateRequest;
+import com.trainingpal.gym.domain.dto.request.DeleteUserRequest;
 import com.trainingpal.gym.domain.dto.response.AthletesResponse;
-import com.trainingpal.gym.domain.entities.Training;
-import com.trainingpal.gym.domain.entities.User;
-import com.trainingpal.gym.domain.mapper.TrainingMapper;
-import com.trainingpal.gym.domain.mapper.UserMapper;
-import com.trainingpal.gym.service.SiteUserService;
 import com.trainingpal.gym.service.TrainingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,9 +63,16 @@ public class AthletesController {
         return ResponseEntity.ok(trainingService.createAthlete(model, authentication.getName()));
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<AthletesResponse> updateById(@PathVariable Integer id,
+    @DeleteMapping
+    public BodyBuilder deleteUser(@Valid @RequestBody DeleteUserRequest model) {
+        trainingService.deleteUser(model.getEmail());
+        return ResponseEntity.accepted();
+    }
+
+    @PutMapping
+    public ResponseEntity<AthletesResponse> updateById(Authentication authentication,
             @Valid @RequestBody AthletesRequest model) {
+
         return ResponseEntity.ok(new AthletesResponse());
     }
 
