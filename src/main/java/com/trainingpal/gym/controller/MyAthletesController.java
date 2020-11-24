@@ -1,6 +1,5 @@
 package com.trainingpal.gym.controller;
 
-import com.trainingpal.gym.domain.dto.response.AthletesResponse;
 import com.trainingpal.gym.domain.dto.response.MyAthletesReponse;
 import com.trainingpal.gym.service.TrainingService;
 
